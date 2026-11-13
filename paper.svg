@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420">
+  <filter id="p" x="0" y="0" width="100%" height="100%">
+    <!-- 종이 요철 -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.035 0.05" numOctaves="5" seed="3" stitchTiles="stitch" result="t"/>
+    <feDiffuseLighting in="t" surfaceScale="1.6" lighting-color="#ffffff" diffuseConstant="1.05" result="l">
+      <feDistantLight azimuth="135" elevation="62"/>
+    </feDiffuseLighting>
+    <!-- 섬유 -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.9 0.22" numOctaves="2" seed="9" stitchTiles="stitch" result="f"/>
+    <feColorMatrix in="f" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.2 0.62" result="fa"/>
+    <feComposite in="fa" in2="l" operator="over" result="m"/>
+    <feColorMatrix in="m" type="saturate" values="0"/>
+  </filter>
+  <rect width="420" height="420" filter="url(#p)"/>
+</svg>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>담담 Damdam</title>
+<meta name="description" content="흘러가는 하루를 눈에 보이게 담는 세 가지 앱, 도담도담 · 소담소담 · 푸르담">
+<meta name="theme-color" content="#ECEBE7">
+<link rel="icon" href="brand-damdam_kr.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preload" href="fonts-JHaebaragi-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts-Damdam-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<!-- 위: 왼쪽 로고 · 오른쪽 메뉴(담담 서체) · 오른쪽 아래 소리 -->
+<header class="top">
+  <a class="logo" href="#hero" data-go="#hero" aria-label="담담 처음으로"><img src="brand-damdam_kr.png" alt="담담"><span aria-hidden="true"><i>Dam</i><i>dam</i></span></a>
+  <nav class="nav" aria-label="구간">
+    <a href="#about" data-go="#about" data-sec="about">Damdam</a>
+    <a href="#dodam" data-go="#dodam" data-sec="dodam">Dodamdodam</a>
+    <a href="#sodam" data-go="#sodam" data-sec="sodam">SodamSodam</a>
+    <a href="#puru" data-go="#puru" data-sec="puru">Purudam</a>
+    <a href="#type" data-go="#type" data-sec="type">Font</a>
+  </nav>
+</header>
+<button class="sound" id="soundBtn" aria-pressed="false" aria-label="소리 켜기"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z"/><path class="wave" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/><path class="mute" d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button>
+
+<!-- 1. 첫 화면: 영상 → 끝나면 스티커가 쏟아져 쌓임 → 누르면 그 앱으로 -->
+<section class="hero" id="hero">
+  <div class="hero-film">
+    <video id="film" src="damdam.mp4" poster="poster.jpg" muted playsinline autoplay loop preload="auto"></video>
+  </div>
+  <div class="pile" id="pile" aria-label="스티커 더미"></div>
+  <div class="tip" id="tip" aria-hidden="true"><img alt=""><span>보러 가기</span></div>
+</section>
+
+<!-- 2. 담담: 왼쪽엔 스티커가 줄지어, 오른쪽엔 "흘러가는 ○○을 [  ]에 담아" -->
+<section class="about" id="about">
+  <div class="about-stage" id="aboutStage">
+    <div class="ab-grid" id="abGrid" aria-hidden="true"></div>
+    <div class="ab-text">
+      <h2 class="ab-h"><span class="ab-l1">흘러가는 <span class="ab-word" id="abWord">순간을</span></span><span class="ab-l2"><span class="ab-slot" id="abSlot"><img alt="" id="abGlyph"></span>에 담아</span></h2>
+      <p class="ab-p" id="abP"></p>
+      <button class="ab-go" id="abGo" aria-label="아래로 계속"><span>scroll</span><svg viewBox="0 0 24 40" aria-hidden="true"><path d="M12 3v32M5 28l7 7 7-7"/></svg></button>
+      <ol class="ab-dots" id="abDots" aria-hidden="true"><li></li><li></li><li></li><li></li></ol>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 앱 -->
+<section class="app" id="dodam" data-app="dodam">
+  <div class="scene" data-scene="dodam">
+    <div class="sc-top"><img class="app-logo" src="brand-logo_dodam.svg" alt="도담도담"><span>Dodamdodam</span></div>
+    <div class="sc-cap"><div class="sc-row"><h2>할 일을 하나 마치면,<br>반찬 하나.</h2><p>도담도담은 하루의 할 일을 도시락에 담아 기록하는 앱이에요. 할 일을 마칠 때마다 반찬을 하나씩 골라 도시락 칸에 담아요.</p></div><ol class="steps"><li><i>1</i><span>할 일을 하나 마치면</span></li><li><i>2</i><span>반찬이 하나씩 도시락에 톡</span></li><li><i>3</i><span>하루를 마치면 포장해서 보관</span></li></ol></div>
+    <a class="sc-store" href="https://apps.apple.com/app/id6832174307" target="_blank" rel="noopener">App Store ↗</a>
+    <div class="objs"></div>
+    <div class="vessel"><span class="hand box-name">오늘의 도시락</span></div>
+    <div class="vessel-front" aria-hidden="true"></div>
+  </div>
+  <div class="sheet" data-app="dodam">
+    <header class="sheet-h"><span class="arr" aria-hidden="true">→</span><div><b>화면</b><i>Screens</i></div><em>01</em></header>
+    <div class="fan" data-shots="6"></div>
+    <div class="gfx" data-kind="bento"></div>
+    <div class="gfx" data-kind="banchan"></div>
+  </div>
+  <div class="app-foot">
+    <a class="store" href="https://apps.apple.com/app/id6832174307" target="_blank" rel="noopener">App Store에서 받기 ↗</a>
+  </div>
+</section>
+
+<section class="app" id="sodam" data-app="sodam">
+  <div class="scene" data-scene="sodam">
+    <div class="sc-top"><img class="app-logo" src="brand-logo_sodam.svg" alt="소담소담"><span>SodamSodam</span></div>
+    <div class="sc-cap"><div class="sc-row"><h2>10분을 집중하면,<br>종이학 한 마리.</h2><p>소담소담은 집중한 시간을 종이학으로 접어 모으는 앱이에요. 손에 잡히지 않던 시간이 유리병 속 종이학으로 남아요.</p></div><ol class="steps"><li><i>1</i><span>타이머를 켜고 10분 집중하면</span></li><li><i>2</i><span>종이학이 한 마리씩 병 속으로</span></li><li><i>3</i><span>가득 찬 병이 곧 나의 시간</span></li></ol></div>
+    <a class="sc-store" href="https://apps.apple.com/app/id6832173528" target="_blank" rel="noopener">App Store ↗</a>
+    <div class="objs"></div>
+    <div class="vessel"><span class="hand box-name">나의 유리병</span></div>
+    <div class="vessel-front" aria-hidden="true"></div>
+  </div>
+  <div class="sheet" data-app="sodam">
+    <header class="sheet-h"><span class="arr" aria-hidden="true">→</span><div><b>화면</b><i>Screens</i></div><em>01</em></header>
+    <div class="fan" data-shots="4"></div>
+    <div class="fold">
+      <div class="fold-stage" id="foldStage"><img class="fold-fallback" alt="" src="stickers-crane-white_side.png"></div>
+      <div class="fold-side">
+        <p class="fold-k" data-split>종이를 고르면, 그 종이로 다시 접어요.</p>
+        <div class="papers" id="papers" role="radiogroup" aria-label="색종이"></div>
+        <p class="fold-now"><span id="paperName">흰색</span> 종이로 접는 중</p>
+      </div>
+    </div>
+  </div>
+  <div class="app-foot">
+    <a class="store" href="https://apps.apple.com/app/id6832173528" target="_blank" rel="noopener">App Store에서 받기 ↗</a>
+  </div>
+</section>
+
+<section class="app" id="puru" data-app="puru">
+  <div class="scene" data-scene="puru">
+    <div class="sc-top"><img class="app-logo" src="brand-logo_puru.svg" alt="푸르담"><span>Purudam</span></div>
+    <div class="sc-cap"><div class="sc-row"><h2>루틴을 지키면,<br>풀 한 포기.</h2><p>푸르담은 매일의 루틴을 테라리움으로 키우는 앱이에요. 지킨 날만큼 식물이 자라고, 한 달이면 나만의 작은 숲이 돼요.</p></div><ol class="steps"><li><i>1</i><span>오늘의 루틴을 지키면</span></li><li><i>2</i><span>식물이 한 포기씩 자라나</span></li><li><i>3</i><span>한 달이면 나만의 테라리움</span></li></ol></div>
+    <a class="sc-store" href="https://apps.apple.com/app/id6832173836" target="_blank" rel="noopener">App Store ↗</a>
+    <div class="objs"></div>
+    <div class="vessel"><span class="hand box-name">나의 테라리움</span></div>
+    <div class="vessel-front" aria-hidden="true"></div>
+  </div>
+  <div class="sheet" data-app="puru">
+    <header class="sheet-h"><span class="arr" aria-hidden="true">→</span><div><b>화면</b><i>Screens</i></div><em>01</em></header>
+    <div class="fan" data-shots="5"></div>
+    <div class="gfx" data-kind="terra"></div>
+    <div class="gfx" data-kind="plants"></div>
+    <div class="dogam" id="dogam"><div class="dg-plant"><img id="dgImg" alt=""></div><div class="dg-side"><div class="dg-chips" id="dgChips"></div><div class="dg-info"><b id="dgName"></b><span id="dgMeta"></span><p id="dgDesc"></p></div></div></div>
+  </div>
+  <div class="app-foot">
+    <a class="store" href="https://apps.apple.com/app/id6832173836" target="_blank" rel="noopener">App Store에서 받기 ↗</a>
+  </div>
+</section>
+
+<!-- 4. 서체 -->
+<section class="type" id="type">
+  <p class="type-k">담담 서체</p>
+  <h2 class="type-big">Damdam</h2>
+
+  <div class="tester">
+    <div class="tester-bar">
+      <div class="seg" role="group" aria-label="서체">
+        <button class="on" data-face="Damdam">Regular</button><button data-face="Damdam Outline">Outline</button>
+      </div>
+      <label class="size">크기 <input type="range" id="tSize" min="28" max="200" value="96"><output id="tSizeOut">96</output></label>
+    </div>
+    <div class="tester-text" id="tText" contenteditable="true" spellcheck="false">Pack your day</div>
+    <p class="tester-note hand">여기에 직접 써 보세요 ↑ <small>영문 · 숫자만 있어요. 한글은 다른 글꼴로 보여요.</small></p>
+  </div>
+
+  <p class="glyphs" id="glyphs" aria-label="담담 서체 글자 모음">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .,:;!?&amp;@#()-+/</p>
+  <p class="dl"><a href="fonts-Damdam-Regular.otf" download>Damdam Regular 받기 ↓</a><a href="fonts-DamdamOutline-Regular.otf" download>Damdam Outline 받기 ↓</a></p>
+</section>
+
+<!-- 5. 끝 -->
+<footer class="end">
+  <p class="end-line hand" data-split>오늘도 담담하게.</p>
+  <ul class="end-apps">
+    <li><a href="https://apps.apple.com/app/id6832174307" target="_blank" rel="noopener"><img src="stickers-misc-icon_dodam.png" alt=""><span>도담도담</span></a></li>
+    <li><a href="https://apps.apple.com/app/id6832173528" target="_blank" rel="noopener"><img src="stickers-misc-icon_sodam.png" alt=""><span>소담소담</span></a></li>
+    <li><a href="https://apps.apple.com/app/id6832173836" target="_blank" rel="noopener"><img src="stickers-misc-icon_puru.png" alt=""><span>푸르담</span></a></li>
+  </ul>
+</footer>
+
+<!-- 아래로 계속 내리라는 안내 (스크롤을 멈추면 다시 나타남) -->
+<div class="scroll-cue" id="scrollCue" aria-hidden="true"><span>아래로 스크롤해 보세요</span><svg viewBox="0 0 18 34"><path d="M9 2v28M2.5 23.5 9 30l6.5-6.5"/></svg></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="fold.js"></script>
+<script src="terra.js"></script>
+<script src="sound.js"></script>
+<script src="site.js"></script>
+<script src="sheets.js"></script>
+</body>
+</html>

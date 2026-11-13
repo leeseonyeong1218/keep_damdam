@@ -28,6 +28,8 @@
   const APP_NAME = { dodam: "도담도담", sodam: "소담소담", puru: "푸르담" };
 
   // 그림을 불러오다 실패하면 (서버가 잠깐 바쁘거나 연결이 끊기면) 조금 뒤 다시 받음 → ? 상자 대신 그림이 나오게
+  // 다시 받기는 페이지 전체에서 40번까지만 (너무 많이 요청하면 GitHub 같은 서버가 잠깐 막음)
+  let retryBudget = 40;
   const retryURL = (base, n) => base + (base.includes("?") ? "&" : "?") + "r=" + n + "-" + Date.now();
   document.addEventListener("error", e => {
     const im = e.target;
@@ -36,9 +38,10 @@
     if (im.dataset.rbase !== base) { im.dataset.rbase = base; im.dataset.rn = "0"; }
     const n = +im.dataset.rn;
     im.classList.add("img-retry");
-    if (n >= 8) return;
+    if (n >= 3 || retryBudget <= 0) return;
+    retryBudget--;
     im.dataset.rn = n + 1;
-    setTimeout(() => { if (im.src.replace(/[?&]r=\d+-\d+$/, "") === base) im.src = retryURL(base, n + 1); }, 300 + n * 500);
+    setTimeout(() => { if (im.src.replace(/[?&]r=\d+-\d+$/, "") === base) im.src = retryURL(base, n + 1); }, 1500 * (n + 1) * (n + 1));
   }, true);
   document.addEventListener("load", e => { if (e.target instanceof HTMLImageElement) e.target.classList.remove("img-retry"); }, true);
 
@@ -48,7 +51,7 @@
     let tries = 0;
     im.onload = () => (im.decode ? im.decode().catch(() => {}) : Promise.resolve()).then(() => res(im));
     im.onerror = () => {
-      if (++tries <= 6) { setTimeout(() => { im.src = ST + src.replace("/", "-") + ".png?r=" + tries + "-" + Date.now(); }, 300 + tries * 400); return; }
+      if (++tries <= 3 && retryBudget > 0) { retryBudget--; setTimeout(() => { im.src = ST + src.replace("/", "-") + ".png?r=" + tries + "-" + Date.now(); }, 1500 * tries * tries); return; }
       delete cache[src];   // 끝내 실패하면 다음에 다시 시도할 수 있게
       res(im);
     };

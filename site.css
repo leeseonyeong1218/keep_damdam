@@ -111,10 +111,22 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .ab-go{margin-top:34px;display:inline-flex;flex-direction:column;align-items:center;gap:6px;color:var(--ink-2);font-family:"Damdam";font-size:13px;letter-spacing:.04em;align-self:flex-start}
 .ab-go svg{width:18px;height:34px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;animation:abNudge 1.8s ease-in-out infinite}
 .ab-go:hover{color:var(--ink)}
-/* 화면 아래 가운데: 계속 스크롤하라는 안내 (스크롤하는 동안 숨었다가 멈추면 다시) */
-.scroll-cue{position:fixed;right:var(--gut);bottom:74px;z-index:65;display:flex;align-items:center;gap:10px;padding:9px 18px 9px 20px;border-radius:99px;background:rgba(250,250,248,.72);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 2px 10px rgba(35,35,34,.1);font-family:var(--hand);font-weight:500;font-size:16px;color:var(--ink);white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s cubic-bezier(.3,1.4,.5,1)}
-.scroll-cue.on{opacity:1;transform:none}
-.scroll-cue svg{width:14px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;animation:abNudge 1.6s ease-in-out infinite}
+/* "스크롤 해주세요": 글자 + 완전히 둥근 테두리. 화면마다 자리를 바꿈 (A 영상 아래 · B 스티커 위 · C 담담 글 아래 · D 앱 장면 오른쪽 가운데 · E 오른쪽 아래 · F 마지막 가운데) */
+.ab-go{visibility:hidden}
+.cue{position:fixed;z-index:66;pointer-events:none;opacity:0;transition:opacity .45s,left .7s cubic-bezier(.5,0,.2,1),top .7s cubic-bezier(.5,0,.2,1),transform .7s cubic-bezier(.5,0,.2,1)}
+.cue.on{opacity:1}
+.cue span{display:inline-block;padding:11px 24px 10px;border:1.4px solid var(--ink);border-radius:999px;background:rgba(250,250,248,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-family:var(--hand);font-weight:500;font-size:17px;line-height:1.2;color:var(--ink);white-space:nowrap;animation:cueBob 2.2s ease-in-out infinite}
+@keyframes cueBob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+.cue[data-pos="bottom"]{left:50%;top:calc(100% - 110px);transform:translateX(-50%)}
+.cue[data-pos="end"]{left:50%;top:calc(100% - 88px);transform:translateX(-50%)}
+footer.end{padding-bottom:160px}   /* 마지막 화면: 아이콘 아래에 "스크롤 해주세요" 자리 */
+.cue[data-pos="top"]{left:50%;top:118px;transform:translateX(-50%)}
+.cue[data-pos="abtext"]{left:var(--abx,60%);top:var(--aby,70%);transform:none}
+.cue[data-pos="scene"]{left:calc(100% - var(--gut));top:50%;transform:translate(-100%,-50%)}
+.cue[data-pos="corner"]{left:calc(100% - var(--gut));top:calc(100% - 134px);transform:translateX(-100%)}
+/* 끝까지 내리고 더 내리면 처음 화면으로: 잠깐 종이색으로 덮었다가 걷힘 */
+.loop-veil{position:fixed;inset:0;z-index:90;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .45s ease}
+.loop-veil.on{opacity:1}
 /* 불러오다 실패한 그림은 다시 받는 동안 숨김 (? 상자가 보이지 않게) */
 img.img-retry{visibility:hidden}
 @keyframes abNudge{0%,100%{transform:translateY(-3px)}50%{transform:translateY(7px)}}

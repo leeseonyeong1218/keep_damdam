@@ -339,24 +339,63 @@
     lastAct = Date.now();
   };
   const poke = () => { lastAct = Date.now(); };
-  ["pointerdown", "pointermove", "wheel", "keydown", "touchstart", "touchmove", "scroll"].forEach(ev => addEventListener(ev, poke, { passive: true }));
+  // 클릭 · 휠 · 키 · 터치만 "쓰는 중"으로 셈. 마우스는 실제로 움직였을 때만 (살짝 흔들리거나 떨리는 건 무시)
+  ["pointerdown", "wheel", "keydown", "touchstart", "touchmove"].forEach(ev => addEventListener(ev, poke, { passive: true }));
+  let pmX = null, pmY = null;
+  addEventListener("pointermove", e => {
+    if (pmX === null || Math.hypot(e.clientX - pmX, e.clientY - pmY) > 40) { pmX = e.clientX; pmY = e.clientY; if (e.isTrusted) poke(); }
+  }, { passive: true });
   setInterval(() => {
     if (Date.now() - lastAct < IDLE_MS) return;
     if (filmShowing()) { lastAct = Date.now(); return; }   // 영상이 나오고 있으면 그대로 둠
     resetHome();
   }, 2000);
 
-  // 아래로 스크롤하라는 안내: 스크롤하는 동안 숨고, 2초 멈추면 다시 (페이지 끝 근처에선 숨김)
+  // "스크롤 해주세요": 지금 보이는 화면에 따라 자리를 바꿈
   const cue = $("#scrollCue");
   if (cue) {
-    let cueT;
-    const nearEnd = () => scrollY + innerHeight > document.documentElement.scrollHeight - innerHeight * 0.5;
-    const cueShow = () => cue.classList.toggle("on", !nearEnd());
-    const cueWait = () => { cue.classList.remove("on"); clearTimeout(cueT); cueT = setTimeout(cueShow, 2000); };
-    ["wheel", "touchmove", "keydown"].forEach(ev => addEventListener(ev, cueWait, { passive: true }));
-    addEventListener("scroll", () => { if (nearEnd() || cue.classList.contains("on")) cueWait(); else { clearTimeout(cueT); cueT = setTimeout(cueShow, 2000); } }, { passive: true });
-    setTimeout(cueShow, 1500);
+    const inView = el => { if (!el) return false; const r = el.getBoundingClientRect(); return r.top < innerHeight * 0.55 && r.bottom > innerHeight * 0.45; };
+    const atEnd = () => scrollY + innerHeight >= document.documentElement.scrollHeight - innerHeight * 0.35;
+    const abP = $("#abP"), aboutStage = $("#aboutStage");
+    const pick = () => {
+      if (atEnd()) return "end";                                                   // F. 마지막: 더 내리면 처음으로
+      if (inView(hero)) return pileEl.querySelector(".st") ? "top" : "bottom";     // B / A
+      if (inView(aboutStage)) return "abtext";                                     // C
+      for (const el of $$(".scene")) if (inView(el)) return "scene";               // D
+      for (const el of $$(".sheet")) if (inView(el)) return "corner";              // E
+      return null;                                                                  // 폰트 화면은 숨김
+    };
+    gsap.ticker.add(() => {
+      const pos = pick();
+      if (pos === "abtext" && abP) {
+        const r = abP.getBoundingClientRect();
+        cue.style.setProperty("--abx", r.left + "px");
+        cue.style.setProperty("--aby", (r.bottom + 34) + "px");
+      }
+      if (pos) cue.dataset.pos = pos;
+      cue.classList.toggle("on", !!pos);
+    });
   }
+
+  // "오늘도 담담하게." 끝까지 내린 뒤 더 내리면 → 처음 화면(영상)으로
+  const veil = document.createElement("div");
+  veil.className = "loop-veil"; document.body.appendChild(veil);
+  let loopPush = 0, looping = false, touchY = null;
+  const bottomed = () => scrollY + innerHeight >= document.documentElement.scrollHeight - 4;
+  const loopHome = () => {
+    if (looping) return; looping = true; loopPush = 0;
+    veil.classList.add("on");
+    setTimeout(() => { resetHome(); setTimeout(() => { veil.classList.remove("on"); looping = false; }, 120); }, 460);
+  };
+  const pushDown = d => {
+    if (!bottomed()) { loopPush = 0; return; }
+    loopPush = Math.max(0, loopPush + d);
+    if (loopPush > 700) loopHome();
+  };
+  addEventListener("wheel", e => pushDown(e.deltaY), { passive: true });
+  addEventListener("touchstart", e => { touchY = e.touches[0].clientY; }, { passive: true });
+  addEventListener("touchmove", e => { if (touchY === null) return; const y = e.touches[0].clientY; pushDown((touchY - y) * 2); touchY = y; }, { passive: true });
+  addEventListener("keydown", e => { if (["ArrowDown", "PageDown", " ", "End"].includes(e.key)) pushDown(260); });
 
   let rz;
   addEventListener("resize", () => {
